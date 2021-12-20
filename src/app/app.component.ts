@@ -1,43 +1,96 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Customer } from './customer.interface';
 
 @Component({
-  moduleId: module.id,
-  selector: 'app-root',
+  selector: 'my-app',
   templateUrl: 'app.component.html',
 })
 export class AppComponent implements OnInit {
-  public myForm: FormGroup; // our form model
+  public myForm: FormGroup;
 
-  // we will use form builder to simplify our syntax
   constructor(private _fb: FormBuilder) {}
 
   ngOnInit() {
-    // we will initialize our form here
     this.myForm = this._fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
-      addresses: this._fb.array([this.initAddress()]),
+      addresses: this._fb.array([]),
+      phones: this._fb.array([]),
     });
+
+    // add address
+    this.addAddress();
+
+    let pArr = [
+      { phone: '(502) 555-1234', phoneType: 'sms' },
+      { phone: '(502) 555-1111', phoneType: 'home' },
+      { phone: '(502) 555-9876', phoneType: 'tty' },
+    ];
+    pArr.forEach((p) => this.addPhone(p));
+    // this.addPhone();
+
+    /* subscribe to addresses value changes */
+    // this.myForm.controls['addresses'].valueChanges.subscribe(x => {
+    //   console.log(x);
+    // })
   }
 
   initAddress() {
-    // initialize our address
     return this._fb.group({
       street: ['', Validators.required],
       postcode: [''],
     });
   }
 
+  initPhone(p?: { phone: string; phoneType: string }) {
+    let pVal = { phone: '', phoneType: '' };
+    if (p) {
+      pVal = p;
+    }
+
+    let valids = Validators.compose([
+      Validators.required,
+      Validators.minLength(14),
+      Validators.maxLength(14),
+    ]);
+    return this._fb.group({
+      phone: [pVal.phone, valids],
+      phoneType: [pVal.phoneType],
+    });
+  }
+
   addAddress() {
-    // add address to the list
     const control = <FormArray>this.myForm.controls['addresses'];
-    control.push(this.initAddress());
+    const addrCtrl = this.initAddress();
+
+    control.push(addrCtrl);
+
+    /* subscribe to individual address value changes */
+    // addrCtrl.valueChanges.subscribe(x => {
+    //   console.log(x);
+    // })
+  }
+
+  addPhone(p?: { phone: string; phoneType: string }) {
+    const control = <FormArray>this.myForm.controls['phones'];
+    const phnCtrl = this.initPhone(p);
+
+    control.push(phnCtrl);
   }
 
   removeAddress(i: number) {
-    // remove address from the list
     const control = <FormArray>this.myForm.controls['addresses'];
     control.removeAt(i);
+  }
+
+  removePhone(i: number) {
+    const control = <FormArray>this.myForm.controls['phones'];
+    control.removeAt(i);
+  }
+
+  save(model: Customer) {
+    // call API to save
+    // ...
+    console.log(model);
   }
 }

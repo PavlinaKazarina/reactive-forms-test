@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'phone',
-    template: `
+  selector: 'phone',
+  template: `
     <div [formGroup]="phoneForm">
       <div class="form-group col-xs-6">
         <label>Phone number</label>
@@ -28,18 +28,20 @@ import { FormGroup } from '@angular/forms';
         </select>
       </div>
     </div>
-    `
+    `,
 })
 export class PhoneComponent {
-    @Input('group')
-    public phoneForm: FormGroup;
-    public phoneTypes = [
-      { value: "home", name: "HOME", desc: "For home phone" },
-      { value: "sms", name: "SMS", desc: "For text messaging" },
-      { value: "tty", name: "TTY", desc: "For the deaf" },
-    ]
-    
-    onClick(phoneType) {
-      console.log(phoneType);
-    }
+  @Input('group')
+  @Input('rawPhone')
+  public rawPhone: string;
+  public phoneForm: FormGroup;
+  public phoneTypes = [
+    { value: 'home', name: 'HOME', desc: 'For home phone' },
+    { value: 'sms', name: 'SMS', desc: 'For text messaging' },
+    { value: 'tty', name: 'TTY', desc: 'For the deaf' },
+  ];
+
+  onClick(phoneType) {
+    console.log(phoneType);
+  }
 }

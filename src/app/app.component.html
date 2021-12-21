@@ -16,7 +16,7 @@
         <div formArrayName="addresses">
           <div
             *ngFor="
-              let address of myForm.controls.addresses.controls;
+              let address of myForm.get('addresses')['controls'];
               let i = index
             "
             class="panel panel-default"
@@ -25,13 +25,13 @@
               <span>Address {{ i + 1 }}</span>
               <span
                 class="glyphicon glyphicon-remove pull-right"
-                *ngIf="myForm.controls.addresses.controls.length > 1"
+                *ngIf="myForm.get('addresses')['controls'] > 1"
                 (click)="removeAddress(i)"
               ></span>
             </div>
             <div class="panel-body" [formGroupName]="i">
               <address
-                [group]="myForm.controls.addresses.controls[i]"
+                [group]="myForm.get('addresses')['controls'][i]"
               ></address>
             </div>
           </div>
@@ -47,20 +47,23 @@
         <!-- phones -->
         <div formArrayName="phones">
           <div
-            *ngFor="let phone of myForm.controls.phones.controls; let i = index"
+            *ngFor="
+              let phone of myForm.get('phones')['controls'];
+              let i = index
+            "
             class="panel panel-default"
           >
             <div class="panel-heading">
               <span>Phone {{ i + 1 }}</span>
               <span
                 class="glyphicon glyphicon-remove pull-right"
-                *ngIf="myForm.controls.phones.controls.length > 1"
+                *ngIf="myForm.get('phones')['controls'] > 1"
                 (click)="removePhone(i)"
               ></span>
             </div>
-            <div class="panel-body" [formGroupName]="i">
-              <phone [group]="myForm.controls.phones.controls[i]"></phone>
-            </div>
+            <!-- <div class="panel-body" [formGroupName]="i">
+              <phone [group]="myForm.get('phones')['controls'][i]"></phone>
+            </div> -->
           </div>
         </div>
 

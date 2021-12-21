@@ -30,9 +30,9 @@ export class AppComponent implements OnInit {
     // this.addPhone();
 
     /* subscribe to addresses value changes */
-    // this.myForm.controls['addresses'].valueChanges.subscribe(x => {
-    //   console.log(x);
-    // })
+    this.myForm.get('addresses').valueChanges.subscribe((x) => {
+      console.log(x);
+    });
   }
 
   initAddress() {
@@ -66,9 +66,9 @@ export class AppComponent implements OnInit {
     control.push(addrCtrl);
 
     /* subscribe to individual address value changes */
-    // addrCtrl.valueChanges.subscribe(x => {
-    //   console.log(x);
-    // })
+    addrCtrl.valueChanges.subscribe((x) => {
+      console.log(x);
+    });
   }
 
   addPhone(p?: { phone: string; phoneType: string }) {
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
   }
 
   removeAddress(i: number) {
-    const control = <FormArray>this.myForm.controls['addresses'];
+    const control = <FormArray>this.myForm.get('addresses');
     control.removeAt(i);
   }
 
@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
     control.removeAt(i);
   }
 
-  save(model: Customer) {
+  save(model: FormGroup) {
     // call API to save
     // ...
     console.log(model);
